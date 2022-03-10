@@ -13,12 +13,52 @@ Packages to install.
 ```
 cloud-init
 cloud-guest-utils
+resolvconf
 ```
 
 And you may need to enable cloud-init service.
 ```
 systemctl enable cloud-init
 ```
+
+Here are [ubuntu cloud images](https://cloud-images.ubuntu.com/) that you can use.
+Select the OVA file and go the Import tab on xen orchestra server.
+
+
+### How to use.
+
+Install terraform.
+
+Then clone this to place that con reach xen orchestra server.
+```
+git clone https://github.com/habbis/terraform_xenorchestra_vm_deploy.git
+```
+
+Have a user ready on xen orchestra that can deploy a vm.
+
+
+
+```
+cd terraform_xenorchestra_vm_deploy
+
+terraform init
+
+```
+
+Add all the right info in variables.tf.
+
+Then add the right info to terraform.auto.tfvars 
+
+Then test and so deploy.
+```
+# testing before deploy and to see changes.
+terraform plan
+
+# deploy
+terraform apply
+```
+
+
 
 
 ### terraform config layout
@@ -109,5 +149,62 @@ users:
 
 ```
 
-The file cloud_network_config.tftpl is a terraform template with [cloud-init network v1 config](https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html) system config.
+The file cloud_network_config.tftpl is a terraform template with [cloud-init network v1 config](https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html).
+
+```
+#cloud-config
+version: 1
+config:
+    - type: physical
+      name: eth0
+      subnets:
+      - type: static
+        address: '${ipv4}'
+        gateway: '${ipv4_gw}'
+        dns_nameservers:
+          - ${dns01}
+          - ${dns02}
+        dns_search:
+          - local.net
+```
+
+
+##### vm.tf
+
+Here is the terraform config to deploy a vm.
+
+
+This config is the terraform template to setup cloud-init for 
+xen orchestra.
+
+```
+    cloud_config = templatefile("cloud_config.tftpl", {
+     name = each.value.name
+     zone = each.value.zone
+
+    })
+    cloud_network_config = templatefile("cloud_network_config.tftpl", {
+     ipv4 =  each.value.ipv4
+     ipv4_gw =  each.value.ipv4_gw
+     dns01   =  each.value.dns01
+     dns02   =  each.value.dns02
+    })
+```
+
+
+Tips and tricks.
+
+To find sr id for a storage volume go to.
+
+Home --> Storage --> yourstorage
+
+
+Here is a example you will see a string like this in a corner.
+
+```
+33ab6c88-6beb-dfa8-aa09-df2994b11d86
+```
+
+![SR id ](.pics/xen_orchestra_sr_id.png)
+
 
