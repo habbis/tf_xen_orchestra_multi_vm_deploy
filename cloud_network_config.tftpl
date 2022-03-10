@@ -1,0 +1,15 @@
+#cloud-config
+version: 1
+config:
+    - type: physical
+      name: eth0
+      subnets:
+      - type: static
+        address: '${ipv4}'
+        gateway: '${ipv4_gw}'
+        dns_nameservers:
+          - ${dns01}
+          - ${dns02}
+        dns_search:
+          - habbfarm.net
+          - no.habbfarm.net
