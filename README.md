@@ -163,11 +163,12 @@ packages:
  - git
  - vim
  - lvm2
- - xe-guest-utilities
  - sudo
  - openssh-server
  - cloud-init
  - cloud-guest-utils
+ - xe-guest-utilities
+ - resolvconf
 runcmd:
   - [sytemctl, enable, --now, xe-linux-distribution]
 ```

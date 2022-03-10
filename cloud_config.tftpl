@@ -28,10 +28,11 @@ packages:
   - git
   - vim
   - lvm2
-  - xe-guest-utilities
   - sudo
   - openssh-server
   - cloud-init
   - cloud-guest-utils
+  - resolvconf
+  - xe-guest-utilities
 runcmd:
   - [sytemctl, enable, --now, xe-linux-distribution]
