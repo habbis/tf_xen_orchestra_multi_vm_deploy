@@ -146,7 +146,30 @@ users:
  - default
   # to encrypt password mkpasswd -m sha-512
  - passwd: yourpasswordhash
-
+# resize root files system
+# its best to setup server with filesystem not lvm when using this.
+resize_rootfs: true
+growpart:
+  mode: auto
+  devices: ['/']
+  ignore_growroot_disabled: false
+packages:
+ - gnupg 
+ - bash-completion
+ - curl
+ - wget
+ - python3
+ - python3-pip
+ - git
+ - vim
+ - lvm2
+ - xe-guest-utilities
+ - sudo
+ - openssh-server
+ - cloud-init
+ - cloud-guest-utils
+runcmd:
+  - [sytemctl, enable, --now, xe-linux-distribution]
 ```
 
 The file cloud_network_config.tftpl is a terraform template with [cloud-init network v1 config](https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html).
