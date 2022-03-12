@@ -1,5 +1,4 @@
 data "xenorchestra_pool" "pool" {
-    name_label = "hf-xcp08.no.habbfarm.net"
     name_label = var.pool
 }
 
