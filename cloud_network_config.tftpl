@@ -6,6 +6,7 @@ config:
       subnets:
       - type: static
         address: '${ipv4}'
+        netmask: '${ipv4_netmask}'
         gateway: '${ipv4_gw}'
         dns_nameservers:
           - ${dns01}
