@@ -27,6 +27,7 @@ resource "xenorchestra_vm" "vm" {
     cloud_network_config = templatefile("cloud_network_config.tftpl", {
      ipv4 =  each.value.ipv4
      ipv4_gw =  each.value.ipv4_gw
+     ipv4_netmask = each.value.ipv4_netmask
      dns01   =  each.value.dns01
      dns02   =  each.value.dns02
     })
